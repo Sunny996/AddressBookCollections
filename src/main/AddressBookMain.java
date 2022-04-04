@@ -5,5 +5,6 @@ public class AddressBookMain {
         System.out.println("Ability to create contacts in Address Book");
         AddressBookSystem addressBookSystem = new AddressBookSystem();
         addressBookSystem.addNewContacts();
+        addressBookSystem.editContacts();
     }
 }
