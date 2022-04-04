@@ -80,6 +80,16 @@ public class AddressBookSystem {
             default:
                 System.out.println("Invalid Option");
         }
-
     }
+    public void deleteContact(){
+        System.out.println("Please enter the first name of contact to be deleted");
+        String firstName = sc.nextLine();
+        System.out.println("Please enter the last name of contact to be deleted");
+        String lastName = sc.nextLine();
+        if (contact.get(0).getFirstName().equalsIgnoreCase(firstName) && contact.get(0).getLastName().equalsIgnoreCase(lastName)) {
+            contact.remove(contact.get(0));
+        }
+        System.out.println("The contact " + firstName + " " + lastName + " has been deleted successfully");
+    }
+
 }
