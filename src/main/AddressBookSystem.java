@@ -7,6 +7,23 @@ public class AddressBookSystem {
     ArrayList<Person> contact = new ArrayList<>();
     Scanner sc = new Scanner(System.in);
 
+    public void userOperations() {
+        System.out.println("Please select the operation to be performed");
+        System.out.println("1.Add contact\n2.Edit contact\n3.Delete contact");
+        int num = sc.nextInt();
+        switch (num) {
+            case 1:
+                addNewContacts();
+                break;
+            case 2:
+                editContacts();
+                break;
+            case 3:
+                deleteContact();
+                break;
+        }
+    }
+
     public void addNewContacts() {
         System.out.println("Enter the contact details:");
         System.out.println("Enter first name:");
@@ -36,8 +53,9 @@ public class AddressBookSystem {
         String firstName = sc.nextLine();
         System.out.println("Please enter the last name of contact to be edited");
         String lastName = sc.nextLine();
-        if (contact.get(0).getFirstName().equalsIgnoreCase(firstName) && contact.get(0).getLastName().equalsIgnoreCase(lastName)) {
-            currentContact = contact.get(0);
+        for (Person person : contact) {
+            if (person.getFirstName().equalsIgnoreCase(firstName) && person.getLastName().equalsIgnoreCase(lastName))
+                currentContact = person;
         }
 
         System.out.println("Select Option:\n1. First Name\n2. Last Name\n 3. City\n4. State\n5. Zip\n6. Phone\n7. Email\n8.Address");
@@ -81,15 +99,16 @@ public class AddressBookSystem {
                 System.out.println("Invalid Option");
         }
     }
-    public void deleteContact(){
+
+    public void deleteContact() {
         System.out.println("Please enter the first name of contact to be deleted");
         String firstName = sc.nextLine();
         System.out.println("Please enter the last name of contact to be deleted");
         String lastName = sc.nextLine();
-        if (contact.get(0).getFirstName().equalsIgnoreCase(firstName) && contact.get(0).getLastName().equalsIgnoreCase(lastName)) {
-            contact.remove(contact.get(0));
+        for (Person person : contact) {
+            if (person.getFirstName().equalsIgnoreCase(firstName) && person.getLastName().equalsIgnoreCase(lastName))
+                contact.remove(person);
         }
         System.out.println("The contact " + firstName + " " + lastName + " has been deleted successfully");
     }
-
 }
