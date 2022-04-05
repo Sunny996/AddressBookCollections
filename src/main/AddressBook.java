@@ -3,27 +3,35 @@ package main;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class AddressBookSystem {
-    ArrayList<Person> contact = new ArrayList<>();
+public class AddressBook {
+    ArrayList<Person> contact ;
     Scanner sc = new Scanner(System.in);
 
-    public void userOperations() {
+    public AddressBook(){
+        contact= new ArrayList<>();
+    }
+    public void userOperations(AddressBook addBook) {
         System.out.println("Please select the operation to be performed");
-        System.out.println("1.Add contact\n2.Edit contact\n3.Delete contact");
+        System.out.println("1.Add contact\n2.Edit contact\n3.Delete contact\n4.Print All Contacts\n5.Exit");
+        Scanner sc=new Scanner(System.in);
         int num = sc.nextInt();
         switch (num) {
             case 1:
-                addNewContacts();
+                addBook.addNewContacts();
                 break;
             case 2:
-                editContacts();
+                addBook.editContacts();
                 break;
             case 3:
-                deleteContact();
+                addBook.deleteContact();
+                break;
+            case 4:
+                addBook.printAllContacts();
+                break;
+            case 5:
                 break;
         }
     }
-
     public void addNewContacts() {
         System.out.println("Enter the contact details:");
         System.out.println("Enter first name:");
@@ -106,9 +114,17 @@ public class AddressBookSystem {
         System.out.println("Please enter the last name of contact to be deleted");
         String lastName = sc.nextLine();
         for (Person person : contact) {
-            if (person.getFirstName().equalsIgnoreCase(firstName) && person.getLastName().equalsIgnoreCase(lastName))
+            if (person.getFirstName().equalsIgnoreCase(firstName) && person.getLastName().equalsIgnoreCase(lastName)){
                 contact.remove(person);
+                System.out.println("The contact " + firstName + " " + lastName + " has been deleted successfully");
+            }
+            else
+                System.out.println("No such contact exists");
+
         }
-        System.out.println("The contact " + firstName + " " + lastName + " has been deleted successfully");
+    }
+    public void printAllContacts(){
+        for(Person person: contact)
+            System.out.println(person);
     }
 }
