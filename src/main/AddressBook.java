@@ -4,35 +4,37 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AddressBook {
-    ArrayList<Person> contact ;
+    ArrayList<Person> contact;
     Scanner sc = new Scanner(System.in);
 
-    public AddressBook(){
-        contact= new ArrayList<>();
+    public AddressBook() {
+        contact = new ArrayList<>();
     }
+
     public void userOperations(AddressBook addBook) {
         System.out.println("Please select the operation to be performed");
         System.out.println("1.Add contact\n2.Edit contact\n3.Delete contact\n4.Print All Contacts\n5.Exit");
-        Scanner sc=new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         int num = sc.nextInt();
         switch (num) {
             case 1:
-                addBook.addNewContacts();
+                addBook.addNewContacts(addBook);
                 break;
             case 2:
-                addBook.editContacts();
+                addBook.editContactsFromAddressBook(addBook);
                 break;
             case 3:
-                addBook.deleteContact();
+                addBook.deleteContactFromAddressBook(addBook);
                 break;
             case 4:
-                addBook.printAllContacts();
+                addBook.printAllContacts(addBook);
                 break;
             case 5:
                 break;
         }
     }
-    public void addNewContacts() {
+
+    public void addNewContacts(AddressBook addBook) {
         System.out.println("Enter the contact details:");
         System.out.println("Enter first name:");
         String firstName = sc.nextLine();
@@ -53,9 +55,10 @@ public class AddressBook {
 
         contact.add(new Person(firstName, lastName, city, state, zip, phoneNumber, email, address));
         System.out.println("The contact " + firstName + " " + lastName + " has been added successfully");
+        userOperations(addBook);
     }
 
-    public void editContacts() {
+    public Person editContactsFromAddressBook(AddressBook addBook) {
         Person currentContact = null;
         System.out.println("Please enter the first name of contact to be edited");
         String firstName = sc.nextLine();
@@ -65,6 +68,12 @@ public class AddressBook {
             if (person.getFirstName().equalsIgnoreCase(firstName) && person.getLastName().equalsIgnoreCase(lastName))
                 currentContact = person;
         }
+        editContacts(currentContact);
+        userOperations(addBook);
+        return currentContact;
+    }
+
+    public void editContacts(Person person) {
 
         System.out.println("Select Option:\n1. First Name\n2. Last Name\n 3. City\n4. State\n5. Zip\n6. Phone\n7. Email\n8.Address");
         int choice = Integer.parseInt(sc.nextLine());
@@ -72,59 +81,67 @@ public class AddressBook {
         switch (choice) {
             case 1:
                 System.out.println("Enter new first name:");
-                String newName = sc.nextLine();
-                currentContact.setFirstName(newName);
+                person.setFirstName(sc.nextLine());
+                System.out.println("The First Name has been edited to " + person.getFirstName());
                 break;
             case 2:
                 System.out.println("Enter new last name:");
-                currentContact.setLastName(sc.nextLine());
+                person.setLastName(sc.nextLine());
+                System.out.println("The Last Name has been edited to " + person.getLastName());
                 break;
             case 3:
                 System.out.println("Enter new city");
-                currentContact.setCity(sc.nextLine());
+                person.setCity(sc.nextLine());
+                System.out.println("The City has been edited to " + person.getCity());
                 break;
             case 4:
                 System.out.println("Enter new State");
-                currentContact.setState(sc.nextLine());
+                person.setState(sc.nextLine());
+                System.out.println("The state has been edited to " + person.getState());
                 break;
             case 5:
                 System.out.println("Enter new Zip");
-                currentContact.setZip(Integer.parseInt(sc.nextLine()));
+                person.setZip(Integer.parseInt(sc.nextLine()));
+                System.out.println("The zip has been edited to " + person.getZip());
                 break;
             case 6:
                 System.out.println("Enter new Phone");
-                currentContact.setPhoneNumber(Long.parseLong(sc.nextLine()));
+                person.setPhoneNumber(Long.parseLong(sc.nextLine()));
+                System.out.println("The phone number has been edited to " + person.getPhoneNumber());
                 break;
             case 7:
                 System.out.println("Enter new email");
-                currentContact.setEmail(sc.nextLine());
+                person.setEmail(sc.nextLine());
+                System.out.println("The email has been edited to " + person.getEmail());
                 break;
             case 8:
                 System.out.println("Enter new Address");
-                currentContact.setAddress(sc.nextLine());
+                person.setAddress(sc.nextLine());
+                System.out.println("The address has been edited to " + person.getAddress());
                 break;
             default:
                 System.out.println("Invalid Option");
         }
     }
 
-    public void deleteContact() {
+    public void deleteContactFromAddressBook(AddressBook addBook) {
         System.out.println("Please enter the first name of contact to be deleted");
         String firstName = sc.nextLine();
         System.out.println("Please enter the last name of contact to be deleted");
         String lastName = sc.nextLine();
-        for (Person person : contact) {
-            if (person.getFirstName().equalsIgnoreCase(firstName) && person.getLastName().equalsIgnoreCase(lastName)){
-                contact.remove(person);
+        for (int i = 0; i < addBook.contact.size(); i++) {
+            if (addBook.contact.get(i).getFirstName().equalsIgnoreCase(firstName) && addBook.contact.get(i).getLastName().equalsIgnoreCase(lastName)) {
+                addBook.contact.remove(i);
                 System.out.println("The contact " + firstName + " " + lastName + " has been deleted successfully");
-            }
-            else
+            } else
                 System.out.println("No such contact exists");
-
         }
+        userOperations(addBook);
     }
-    public void printAllContacts(){
-        for(Person person: contact)
+
+    public void printAllContacts(AddressBook addBook) {
+        for (Person person : addBook.contact)
             System.out.println(person);
+        userOperations(addBook);
     }
 }

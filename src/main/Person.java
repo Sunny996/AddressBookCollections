@@ -87,13 +87,13 @@ public class Person {
     @Override
     public String toString(){
         return "Contact Details\n"+
-                "First Name "+firstName+"\n"+
-                "Last Name "+lastName+"\n"+
-                "City "+city+"\n"+
-                "State "+state+"\n"+
-                "Zip "+zip+"\n"+
-                "Phone Number "+phoneNumber+"\n"+
-                "Email "+email+"\n"+
-                "Address "+address+"\n";
+                "First Name : "+firstName+"\n"+
+                "Last Name : "+lastName+"\n"+
+                "City : "+city+"\n"+
+                "State : "+state+"\n"+
+                "Zip : "+zip+"\n"+
+                "Phone Number : "+phoneNumber+"\n"+
+                "Email : "+email+"\n"+
+                "Address : "+address+"\n";
     }
 }
