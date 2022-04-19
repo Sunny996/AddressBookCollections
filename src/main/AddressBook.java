@@ -53,8 +53,13 @@ public class AddressBook {
         System.out.println("Enter address");
         String address = sc.nextLine();
 
-        contact.add(new Person(firstName, lastName, city, state, zip, phoneNumber, email, address));
-        System.out.println("The contact " + firstName + " " + lastName + " has been added successfully");
+        Person person = new Person(firstName, lastName, city, state, zip, phoneNumber, email, address);
+        boolean bool = addBook.contact.stream().anyMatch(s -> s.equals(person));
+        if (!bool) {
+            contact.add(person);
+            System.out.println("The contact " + firstName + " " + lastName + " has been added successfully");
+        } else
+            System.out.println("This is a duplicate contact, please enter new contact");
         userOperations(addBook);
     }
 
