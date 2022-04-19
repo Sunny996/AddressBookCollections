@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class AddressBook {
     ArrayList<Person> contact;
     Scanner sc = new Scanner(System.in);
+    AddressBookMain addressBookMain = new AddressBookMain();
 
     public AddressBook() {
         contact = new ArrayList<>();
@@ -57,6 +58,18 @@ public class AddressBook {
         boolean bool = addBook.contact.stream().anyMatch(s -> s.equals(person));
         if (!bool) {
             contact.add(person);
+            if (addressBookMain.cityPersonMap.get(person.getCity()) != null)
+                addressBookMain.cityPersonMap.get(person.getCity()).add(person);
+            else {
+                addressBookMain.cityPersonMap.put(person.getCity(), new ArrayList<Person>());
+                addressBookMain.cityPersonMap.get(person.getCity()).add(person);
+            }
+            if (addressBookMain.statePersonMap.get(person.getState()) != null)
+                addressBookMain.statePersonMap.get(person.getState()).add(person);
+            else {
+                addressBookMain.statePersonMap.put(person.getState(), new ArrayList<Person>());
+                addressBookMain.statePersonMap.get(person.getState()).add(person);
+            }
             System.out.println("The contact " + firstName + " " + lastName + " has been added successfully");
         } else
             System.out.println("This is a duplicate contact, please enter new contact");
@@ -96,12 +109,26 @@ public class AddressBook {
                 break;
             case 3:
                 System.out.println("Enter new city");
+                addressBookMain.cityPersonMap.get(person.getCity()).remove(person);
                 person.setCity(sc.nextLine());
+                if (addressBookMain.cityPersonMap.get(person.getCity()) != null)
+                    addressBookMain.cityPersonMap.get(person.getCity()).add(person);
+                else {
+                    addressBookMain.cityPersonMap.put(person.getCity(), new ArrayList<Person>());
+                    addressBookMain.cityPersonMap.get(person.getCity()).add(person);
+                }
                 System.out.println("The City has been edited to " + person.getCity());
                 break;
             case 4:
                 System.out.println("Enter new State");
+                addressBookMain.statePersonMap.get(person.getState()).remove(person);
                 person.setState(sc.nextLine());
+                if (addressBookMain.cityPersonMap.get(person.getState()) != null)
+                    addressBookMain.cityPersonMap.get(person.getState()).add(person);
+                else {
+                    addressBookMain.cityPersonMap.put(person.getState(), new ArrayList<Person>());
+                    addressBookMain.cityPersonMap.get(person.getState()).add(person);
+                }
                 System.out.println("The state has been edited to " + person.getState());
                 break;
             case 5:
@@ -136,6 +163,8 @@ public class AddressBook {
         String lastName = sc.nextLine();
         for (int i = 0; i < addBook.contact.size(); i++) {
             if (addBook.contact.get(i).getFirstName().equalsIgnoreCase(firstName) && addBook.contact.get(i).getLastName().equalsIgnoreCase(lastName)) {
+                addressBookMain.cityPersonMap.get(addBook.contact.get(i).getCity()).remove(addBook.contact.get(i));
+                addressBookMain.statePersonMap.get(addBook.contact.get(i).getState()).remove(addBook.contact.get(i));
                 addBook.contact.remove(i);
                 System.out.println("The contact " + firstName + " " + lastName + " has been deleted successfully");
             } else

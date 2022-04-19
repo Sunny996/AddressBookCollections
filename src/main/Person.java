@@ -98,6 +98,7 @@ public class Person {
                 "Address : " + address + "\n";
     }
 
+
     @Override
     public boolean equals(Object obj) {
         if (this.getFirstName().equalsIgnoreCase(((Person) obj).getFirstName()) && this.getLastName().equalsIgnoreCase(((Person) obj).getLastName()))

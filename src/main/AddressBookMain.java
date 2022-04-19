@@ -1,21 +1,22 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AddressBookMain {
+    HashMap<String, ArrayList<Person>> cityPersonMap = new HashMap<>();
+    HashMap<String, ArrayList<Person>> statePersonMap = new HashMap<>();
+
     public static void main(String[] args) {
         HashMap<String, AddressBook> addressBooks = new HashMap<>();
         Scanner sc = new Scanner(System.in);
-        AddressBook addressBook;
+        AddressBook addressBook = new AddressBook();
         String bookName = "";
 
         while (true) {
             System.out.println("Enter\n1.To Create New Address Book\n2.View/Edit Address Book\n3.Edit contact\n4.Delete contact" +
-                    "\n5.Print All address books\n6.Search Person by City\n7.Search Person By state\n 8. Exit");
+                    "\n5.Print All address books\n6.Search Person by City\n7.Search Person By state\n8.Print City Person Dictionary\n" +
+                    "9.Print State Person Dictionary\n10.Exit");
             int num = sc.nextInt();
             if (num == 1) {
                 addressBook = new AddressBook();
@@ -56,7 +57,10 @@ public class AddressBookMain {
                 for (String book : addressBooks.keySet()) {
                     for (int i = 0; i < addressBooks.get(book).contact.size(); i++) {
                         if (addressBooks.get(book).contact.get(i).getFirstName().equalsIgnoreCase(fName) && addressBooks.get(book).contact.get(i).getLastName().equalsIgnoreCase(lName)) {
+                            addressBook.addressBookMain.cityPersonMap.get(addressBooks.get(book).contact.get(i).getCity()).remove(addressBooks.get(book).contact.get(i));
+                            addressBook.addressBookMain.statePersonMap.get(addressBooks.get(book).contact.get(i).getState()).remove(addressBooks.get(book).contact.get(i));
                             addressBooks.get(book).contact.remove(i);
+
                             flag = true;
                         }
                     }
@@ -74,12 +78,20 @@ public class AddressBookMain {
             } else if (num == 6) {
                 System.out.println("Enter city of Person to search");
                 String city = sc.next();
-                addressBooks.values().stream().forEach(s -> s.contact.stream().filter(a -> a.getCity().equalsIgnoreCase(city)).forEach(p-> System.out.println(p)));
+                addressBooks.values().stream().forEach(s -> s.contact.stream().filter(a -> a.getCity().equalsIgnoreCase(city)).forEach(p -> System.out.println(p)));
             } else if (num == 7) {
                 System.out.println("Enter State of Person to search");
                 String state = sc.next();
-                addressBooks.values().stream().forEach(s -> s.contact.stream().filter(a -> a.getState().equalsIgnoreCase(state)).forEach(p-> System.out.println(p)));
+                addressBooks.values().stream().forEach(s -> s.contact.stream().filter(a -> a.getState().equalsIgnoreCase(state)).forEach(p -> System.out.println(p)));
             } else if (num == 8) {
+                for (Map.Entry<String, ArrayList<Person>> map : addressBook.addressBookMain.cityPersonMap.entrySet()) {
+                    System.out.println(map.getKey() + "->" +Arrays.toString(map.getValue().toArray()) );
+                }
+            } else if (num == 9) {
+                for (Map.Entry<String, ArrayList<Person>> map : addressBook.addressBookMain.statePersonMap.entrySet()) {
+                    System.out.println(map.getKey() + "->" + Arrays.toString(map.getValue().toArray()));
+                }
+            } else if (num == 10) {
                 System.out.println("Thank you for using address book");
                 break;
             }
