@@ -1,7 +1,10 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class AddressBookMain {
     public static void main(String[] args) {
@@ -11,7 +14,8 @@ public class AddressBookMain {
         String bookName = "";
 
         while (true) {
-            System.out.println("Enter\n1.To Create New Address Book\n2.View/Edit Address Book\n3.Edit contact\n4.Delete contact\n5.Print All address books\n6. Exit");
+            System.out.println("Enter\n1.To Create New Address Book\n2.View/Edit Address Book\n3.Edit contact\n4.Delete contact" +
+                    "\n5.Print All address books\n6.Search Person by City\n7.Search Person By state\n 8. Exit");
             int num = sc.nextInt();
             if (num == 1) {
                 addressBook = new AddressBook();
@@ -68,6 +72,14 @@ public class AddressBookMain {
                     }
                 }
             } else if (num == 6) {
+                System.out.println("Enter city of Person to search");
+                String city = sc.next();
+                addressBooks.values().stream().forEach(s -> s.contact.stream().filter(a -> a.getCity().equalsIgnoreCase(city)).forEach(p-> System.out.println(p)));
+            } else if (num == 7) {
+                System.out.println("Enter State of Person to search");
+                String state = sc.next();
+                addressBooks.values().stream().forEach(s -> s.contact.stream().filter(a -> a.getState().equalsIgnoreCase(state)).forEach(p-> System.out.println(p)));
+            } else if (num == 8) {
                 System.out.println("Thank you for using address book");
                 break;
             }
