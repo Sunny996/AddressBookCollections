@@ -6,17 +6,18 @@ import java.util.stream.Collectors;
 public class AddressBookMain {
     HashMap<String, ArrayList<Person>> cityPersonMap = new HashMap<>();
     HashMap<String, ArrayList<Person>> statePersonMap = new HashMap<>();
+    static AddressBookMain addressBookMain = new AddressBookMain();
 
     public static void main(String[] args) {
         HashMap<String, AddressBook> addressBooks = new HashMap<>();
         Scanner sc = new Scanner(System.in);
-        AddressBook addressBook = new AddressBook();
+        AddressBook addressBook=null;
         String bookName = "";
 
         while (true) {
             System.out.println("Enter\n1.To Create New Address Book\n2.View/Edit Address Book\n3.Edit contact\n4.Delete contact" +
                     "\n5.Print All address books\n6.Search Person by City\n7.Search Person By state\n8.Print City Person Dictionary\n" +
-                    "9.Print State Person Dictionary\n10.Exit");
+                    "9.Print State Person Dictionary\n10.Count of contacts by city\n11.Count of contacts by state\n12.Exit");
             int num = sc.nextInt();
             if (num == 1) {
                 addressBook = new AddressBook();
@@ -57,8 +58,8 @@ public class AddressBookMain {
                 for (String book : addressBooks.keySet()) {
                     for (int i = 0; i < addressBooks.get(book).contact.size(); i++) {
                         if (addressBooks.get(book).contact.get(i).getFirstName().equalsIgnoreCase(fName) && addressBooks.get(book).contact.get(i).getLastName().equalsIgnoreCase(lName)) {
-                            addressBook.addressBookMain.cityPersonMap.get(addressBooks.get(book).contact.get(i).getCity()).remove(addressBooks.get(book).contact.get(i));
-                            addressBook.addressBookMain.statePersonMap.get(addressBooks.get(book).contact.get(i).getState()).remove(addressBooks.get(book).contact.get(i));
+                            addressBookMain.cityPersonMap.get(addressBooks.get(book).contact.get(i).getCity().toUpperCase()).remove(addressBooks.get(book).contact.get(i));
+                            addressBookMain.statePersonMap.get(addressBooks.get(book).contact.get(i).getState().toUpperCase()).remove(addressBooks.get(book).contact.get(i));
                             addressBooks.get(book).contact.remove(i);
 
                             flag = true;
@@ -84,14 +85,22 @@ public class AddressBookMain {
                 String state = sc.next();
                 addressBooks.values().stream().forEach(s -> s.contact.stream().filter(a -> a.getState().equalsIgnoreCase(state)).forEach(p -> System.out.println(p)));
             } else if (num == 8) {
-                for (Map.Entry<String, ArrayList<Person>> map : addressBook.addressBookMain.cityPersonMap.entrySet()) {
-                    System.out.println(map.getKey() + "->" +Arrays.toString(map.getValue().toArray()) );
+                for (Map.Entry<String, ArrayList<Person>> map : addressBookMain.cityPersonMap.entrySet()) {
+                    System.out.println(map.getKey() + "->" + Arrays.toString(map.getValue().toArray()));
                 }
             } else if (num == 9) {
-                for (Map.Entry<String, ArrayList<Person>> map : addressBook.addressBookMain.statePersonMap.entrySet()) {
+                for (Map.Entry<String, ArrayList<Person>> map : addressBookMain.statePersonMap.entrySet()) {
                     System.out.println(map.getKey() + "->" + Arrays.toString(map.getValue().toArray()));
                 }
             } else if (num == 10) {
+                for (Map.Entry<String, ArrayList<Person>> map : addressBookMain.cityPersonMap.entrySet()) {
+                    System.out.println(map.getKey() + "->" + map.getValue().stream().count());
+                }
+            } else if (num == 11) {
+                for (Map.Entry<String, ArrayList<Person>> map : addressBookMain.statePersonMap.entrySet()) {
+                    System.out.println(map.getKey() + "->" + map.getValue().stream().count());
+                }
+            } else if (num == 12) {
                 System.out.println("Thank you for using address book");
                 break;
             }
