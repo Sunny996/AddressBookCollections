@@ -180,25 +180,25 @@ public class AddressBook {
         userOperations(addBook);
     }
 
-    public List sortAddressBookByName() {
+    public List<Person> sortAddressBookByName() {
         List<Person> sortedList = this.contact.stream()
                 .sorted(Comparator.comparing(Person::getFirstName))
                 .collect(Collectors.toList());
         return sortedList;
     }
-    public List sortAddressBookByCity(){
+    public List<Person> sortAddressBookByCity(){
         List<Person> sortedList = this.contact.stream()
                 .sorted(Comparator.comparing(Person::getCity))
                 .collect(Collectors.toList());
         return sortedList;
     }
-    public List sortAddressBookByState(){
+    public List<Person> sortAddressBookByState(){
         List<Person> sortedList = this.contact.stream()
                 .sorted(Comparator.comparing(Person::getState))
                 .collect(Collectors.toList());
         return sortedList;
     }
-    public List sortAddressBookByZip(){
+    public List<Person> sortAddressBookByZip(){
         List<Person> sortedList = this.contact.stream()
                 .sorted(Comparator.comparing(Person::getZip))
                 .collect(Collectors.toList());
