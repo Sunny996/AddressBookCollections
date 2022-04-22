@@ -1,8 +1,7 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static main.AddressBookMain.addressBookMain;
 
@@ -180,4 +179,12 @@ public class AddressBook {
             System.out.println(person);
         userOperations(addBook);
     }
+
+    public List sortAddressBook() {
+        List<Person> sortedList = this.contact.stream()
+                .sorted(Comparator.comparing(Person::getFirstName))
+                .collect(Collectors.toList());
+        return sortedList;
+    }
+
 }

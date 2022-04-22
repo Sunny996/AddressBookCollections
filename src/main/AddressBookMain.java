@@ -8,16 +8,16 @@ public class AddressBookMain {
     HashMap<String, ArrayList<Person>> statePersonMap = new HashMap<>();
     static AddressBookMain addressBookMain = new AddressBookMain();
 
+
     public static void main(String[] args) {
         HashMap<String, AddressBook> addressBooks = new HashMap<>();
         Scanner sc = new Scanner(System.in);
-        AddressBook addressBook=null;
+        AddressBook addressBook = null;
         String bookName = "";
-
         while (true) {
             System.out.println("Enter\n1.To Create New Address Book\n2.View/Edit Address Book\n3.Edit contact\n4.Delete contact" +
                     "\n5.Print All address books\n6.Search Person by City\n7.Search Person By state\n8.Print City Person Dictionary\n" +
-                    "9.Print State Person Dictionary\n10.Count of contacts by city\n11.Count of contacts by state\n12.Exit");
+                    "9.Print State Person Dictionary\n10.Count of contacts by city\n11.Count of contacts by state\n12.Sort AddressBook based on name");
             int num = sc.nextInt();
             if (num == 1) {
                 addressBook = new AddressBook();
@@ -101,9 +101,13 @@ public class AddressBookMain {
                     System.out.println(map.getKey() + "->" + map.getValue().stream().count());
                 }
             } else if (num == 12) {
-                System.out.println("Thank you for using address book");
+                System.out.println("Enter AddressBook name to sort");
+                String book = sc.next();
+                List list = addressBooks.get(book).sortAddressBook();
+                System.out.println(Arrays.toString(list.toArray()));
+
+            } else
                 break;
-            }
         }
     }
 }
