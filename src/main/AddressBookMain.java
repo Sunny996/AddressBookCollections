@@ -101,12 +101,30 @@ public class AddressBookMain {
                     System.out.println(map.getKey() + "->" + map.getValue().stream().count());
                 }
             } else if (num == 12) {
-                System.out.println("Enter AddressBook name to sort");
+                System.out.println("Enter AddressBook name to sort by name");
                 String book = sc.next();
-                List list = addressBooks.get(book).sortAddressBook();
+                List list = addressBooks.get(book).sortAddressBookByName();
                 System.out.println(Arrays.toString(list.toArray()));
 
-            } else
+            } else if (num == 13) {
+                System.out.println("Enter AddressBook name to sort by City");
+                String book = sc.next();
+                List list = addressBooks.get(book).sortAddressBookByCity();
+                System.out.println(Arrays.toString(list.toArray()));
+
+            } else if (num == 14) {
+                System.out.println("Enter AddressBook name to sort by state");
+                String book = sc.next();
+                List list = addressBooks.get(book).sortAddressBookByState();
+                System.out.println(Arrays.toString(list.toArray()));
+
+            } else if (num == 15) {
+                System.out.println("Enter AddressBook name to sort by Zip");
+                String book = sc.next();
+                List list = addressBooks.get(book).sortAddressBookByZip();
+                System.out.println(Arrays.toString(list.toArray()));
+
+            } else if (num == 16)
                 break;
         }
     }
