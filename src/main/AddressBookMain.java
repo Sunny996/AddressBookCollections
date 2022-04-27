@@ -1,15 +1,17 @@
 package main;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class AddressBookMain {
     HashMap<String, ArrayList<Person>> cityPersonMap = new HashMap<>();
     HashMap<String, ArrayList<Person>> statePersonMap = new HashMap<>();
     static AddressBookMain addressBookMain = new AddressBookMain();
 
-
     public static void main(String[] args) {
+        addressBookMain.callFunction();
+    }
+
+    public void callFunction() {
         HashMap<String, AddressBook> addressBooks = new HashMap<>();
         Scanner sc = new Scanner(System.in);
         AddressBook addressBook = null;
@@ -18,8 +20,9 @@ public class AddressBookMain {
         while (true) {
             System.out.println("Enter\n1.To Create New Address Book\n2.View/Edit Address Book\n3.Edit contact\n4.Delete contact" +
                     "\n5.Print All address books\n6.Search Person by City\n7.Search Person By state\n8.Print City Person Dictionary\n" +
-                    "9.Print State Person Dictionary\n10.Count of contacts by city\n11.Count of contacts by state\n12.Sort AddressBook based on name\n"+
-                    "13.Sort AddressBook based on City\n14.Sort AddressBook based on State\n15.Sort AddressBook based on Zip\n16.Exit");
+                    "9.Print State Person Dictionary\n10.Count of contacts by city\n11.Count of contacts by state\n12.Sort AddressBook based on name\n" +
+                    "13.Sort AddressBook based on City\n14.Sort AddressBook based on State\n15.Sort AddressBook based on Zip\n" +
+                    "16.Write Contacts To File\n17.Exit");
             int num = sc.nextInt();
             switch (num) {
                 case 1:
@@ -142,13 +145,21 @@ public class AddressBookMain {
                     List<Person> list = addressBooks.get(book).sortAddressBookByState();
                     System.out.println(Arrays.toString(list.toArray()));
                     break;
-                } case 15: {
+                }
+                case 15: {
                     System.out.println("Enter AddressBook name to sort by Zip");
                     String book = sc.next();
                     List<Person> list = addressBooks.get(book).sortAddressBookByZip();
                     System.out.println(Arrays.toString(list.toArray()));
                     break;
-                } case 16:
+                }
+                case 16: {
+                    System.out.println("Enter AddressBook name to write");
+                    String book = sc.next();
+                    addressBooks.get(book).writeToFile(bookName + ".txt");
+                    break;
+                }
+                case 17:
                     break OuterLoop;
             }
         }

@@ -1,5 +1,9 @@
 package main;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -203,6 +207,18 @@ public class AddressBook {
                 .sorted(Comparator.comparing(Person::getZip))
                 .collect(Collectors.toList());
         return sortedList;
+    }
+    public void writeToFile(String fileName){
+        StringBuffer contactBuffer=new StringBuffer();
+        contact.forEach(contact->{
+            String contactString = contact.toString().concat("\n");
+            contactBuffer.append(contactString);
+        });
+        try{
+            Files.write(Paths.get(fileName),contactBuffer.toString().getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
