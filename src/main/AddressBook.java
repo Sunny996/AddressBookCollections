@@ -1,10 +1,17 @@
 package main;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvException;
+
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import static main.AddressBookMain.addressBookMain;
@@ -190,37 +197,72 @@ public class AddressBook {
                 .collect(Collectors.toList());
         return sortedList;
     }
-    public List<Person> sortAddressBookByCity(){
+
+    public List<Person> sortAddressBookByCity() {
         List<Person> sortedList = this.contact.stream()
                 .sorted(Comparator.comparing(Person::getCity))
                 .collect(Collectors.toList());
         return sortedList;
     }
-    public List<Person> sortAddressBookByState(){
+
+    public List<Person> sortAddressBookByState() {
         List<Person> sortedList = this.contact.stream()
                 .sorted(Comparator.comparing(Person::getState))
                 .collect(Collectors.toList());
         return sortedList;
     }
-    public List<Person> sortAddressBookByZip(){
+
+    public List<Person> sortAddressBookByZip() {
         List<Person> sortedList = this.contact.stream()
                 .sorted(Comparator.comparing(Person::getZip))
                 .collect(Collectors.toList());
         return sortedList;
     }
-    public void writeToFile(String fileName){
-        StringBuffer contactBuffer=new StringBuffer();
-        contact.forEach(contact->{
+
+    public void writeToFile(String fileName) {
+        StringBuffer contactBuffer = new StringBuffer();
+        contact.forEach(contact -> {
             String contactString = contact.toString().concat("\n");
             contactBuffer.append(contactString);
         });
-        try{
-            Files.write(Paths.get(fileName),contactBuffer.toString().getBytes());
+        try {
+            Files.write(Paths.get(fileName), contactBuffer.toString().getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public void readFromCSV(String fileName) {
+        try (Reader reader = new BufferedReader(new FileReader(fileName))) {
+            CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
+            List<String[]> allData = csvReader.readAll();
+            contact = new ArrayList<Person>();
+            for (String[] person : allData) {
+                contact.add(new Person(person[0], person[1], person[2], person[3], Integer.parseInt(person[4]), Long.parseLong(person[5]), person[6], person[7]));
+            }
+
+        } catch (CsvException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeToCSV(String fileName) {
+        File file = new File(fileName);
+        try {
+            FileWriter outputFile = new FileWriter(file);
+            CSVWriter csvWriter = new CSVWriter(outputFile);
+            String[] header = {"FirstName", "LastName", "City", "State", "Zip", "PhoneNumber", "Email", "Address"};
+            csvWriter.writeNext(header);
+            for (Person p : contact) {
+                String[] line = {p.getFirstName(), p.getLastName(), p.getCity(), p.getState(), String.valueOf(p.getZip())
+                        , String.valueOf(p.getPhoneNumber()), p.getEmail(), p.getAddress()};
+                csvWriter.writeNext(line);
+            }
+            csvWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

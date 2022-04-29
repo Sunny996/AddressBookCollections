@@ -159,7 +159,14 @@ public class AddressBookMain {
                     addressBooks.get(book).writeToFile(bookName + ".txt");
                     break;
                 }
-                case 17:
+                case 17: {
+                    System.out.println("Enter AddressBook name to read and write");
+                    String book = sc.next();
+                    addressBooks.get(book).readFromCSV("read.csv");
+                    addressBooks.get(book).writeToCSV("write.csv");
+                    break;
+                }
+                case 18:
                     break OuterLoop;
             }
         }
