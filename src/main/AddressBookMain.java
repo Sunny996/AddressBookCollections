@@ -22,7 +22,7 @@ public class AddressBookMain {
                     "\n5.Print All address books\n6.Search Person by City\n7.Search Person By state\n8.Print City Person Dictionary\n" +
                     "9.Print State Person Dictionary\n10.Count of contacts by city\n11.Count of contacts by state\n12.Sort AddressBook based on name\n" +
                     "13.Sort AddressBook based on City\n14.Sort AddressBook based on State\n15.Sort AddressBook based on Zip\n" +
-                    "16.Write Contacts To File\n17.Exit");
+                    "16.Write Contacts To File\n17.Read and Write to CSV File\n18.Read and write to JSON File\n19.Exit");
             int num = sc.nextInt();
             switch (num) {
                 case 1:
@@ -166,7 +166,14 @@ public class AddressBookMain {
                     addressBooks.get(book).writeToCSV("write.csv");
                     break;
                 }
-                case 18:
+                case 18: {
+                    System.out.println("Enter AddressBook name to read and write");
+                    String book = sc.next();
+                    addressBooks.get(book).readFromJSON("read.json");
+                    addressBooks.get(book).writeToJSON("write.json");
+                    break;
+                }
+                case 19:
                     break OuterLoop;
             }
         }

@@ -4,6 +4,10 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -236,7 +240,6 @@ public class AddressBook {
         try (Reader reader = new BufferedReader(new FileReader(fileName))) {
             CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
             List<String[]> allData = csvReader.readAll();
-            contact = new ArrayList<Person>();
             for (String[] person : allData) {
                 contact.add(new Person(person[0], person[1], person[2], person[3], Integer.parseInt(person[4]), Long.parseLong(person[5]), person[6], person[7]));
             }
@@ -259,6 +262,55 @@ public class AddressBook {
                 csvWriter.writeNext(line);
             }
             csvWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readFromJSON(String fileName) {
+        JSONParser parser = new JSONParser();
+        try (Reader reader = new FileReader("fileName")) {
+            Object obj = parser.parse(reader);
+            JSONObject jsonObject = (JSONObject) obj;
+            JSONArray contacts = (JSONArray) jsonObject.get("AddressBook");
+            for (int i = 0; i < contacts.size(); i++) {
+                JSONObject jsonObject1 = (JSONObject) contacts.get(0);
+                String firstName = (String) jsonObject1.get("FirstName");
+                String lastName = (String) jsonObject1.get("LastName");
+                String city = (String) jsonObject1.get("City");
+                String state = (String) jsonObject1.get("State");
+                Long zip = Long.valueOf((String) jsonObject1.get("Zip"));
+                String phoneNumber = (String) jsonObject1.get("PhoneNumber");
+                String email = (String) jsonObject1.get("Email");
+                String address = (String) jsonObject1.get("Address");
+                contact.add(new Person(firstName, lastName, city, state, Integer.parseInt(String.valueOf(zip)), Long.parseLong(phoneNumber), email, address));
+            }
+
+
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void writeToJSON(String fileName) {
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(fileName))) {
+            JSONArray arr = new JSONArray();
+            JSONObject outer = new JSONObject();
+            for (Person person : contact) {
+                JSONObject obj = new JSONObject();
+                obj.put("FirstName", person.getFirstName());
+                obj.put("LastName", person.getLastName());
+                obj.put("City", person.getCity());
+                obj.put("State", person.getState());
+                obj.put("Zip", person.getZip());
+                obj.put("PhoneNumber", person.getPhoneNumber());
+                obj.put("Email", person.getEmail());
+                obj.put("Address", person.getAddress());
+                arr.add(obj);
+            }
+            outer.put("AddressBook", arr);
+            writer.write(outer.toJSONString());
         } catch (IOException e) {
             e.printStackTrace();
         }
